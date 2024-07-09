@@ -1,6 +1,11 @@
 import os
-from pymongo.mongo_client import MongoClient
+from pymongo import MongoClient
 from pymongo.server_api import ServerApi
+
+# Connessione iniziale a MongoDB
+# Cambia l'URI con il tuo URI MongoDB
+uri = "mongodb+srv://mongo:mongo@ufs13.9ag482l.mongodb.net/?retryWrites=true&w=majority&appName=UFS13"
+client = MongoClient(uri, server_api=ServerApi('1'))
 
 # Funzione per pulire lo schermo
 def clear_screen():
@@ -9,37 +14,20 @@ def clear_screen():
     else:
         os.system('clear')  # Linux/Mac
 
-# Funzione per connettersi a MongoDB
-def connect_to_mongo():
-    # Cambia l'URI con il tuo URI MongoDB
-    uri = "mongodb+srv://<username>:<password>@ufs13.9ag482l.mongodb.net/?retryWrites=true&w=majority&appName=UFS13"
-    client = MongoClient(uri, server_api=ServerApi('1'))
-    
-    # Send a ping to confirm a successful connection
-    try:
-        client.admin.command('ping')
-        print("Pinged your deployment. You successfully connected to MongoDB!")
-    except Exception as e:
-        print(e)
-    
-    return client
-
 # Funzione per cercare i concerti per artista
 def search_concerts_by_artist(artist_name):
-    client = connect_to_mongo()
-    db = client['concerts_db']
-    collection = db['concerts']
-    concerts = collection.find({"artista": artist_name})
-    client.close()
+    db = client['Mongo_DB_Data_Lake']
+    collection = db['Concerti']
+    concerts = collection.find({"artisiti": artist_name})
     return concerts
 
 # Funzione per visualizzare i concerti trovati
 def display_concerts(concerts):
     for concert in concerts:
-        print("\nArtista: ", concert.get('artista', 'N/A'))
-        print("Concerto: ", concert.get('concerto', 'N/A'))
-        print("Data: ", concert.get('data', 'N/A').strftime("%Y-%m-%d") if concert.get('data') else 'N/A')
-        print("Luogo: ", concert.get('luogo', 'N/A'))
+        print("\nArtista: ", concert['artisiti'])
+        print("Concerto: ", concert['nome'])
+        print("Data: ", concert['date'][0].strftime('%y-%m-%d'))
+        print("Luogo: ", concert['nome_luogo'])
         print("--------------")
 
 # Funzione per cercare concerti

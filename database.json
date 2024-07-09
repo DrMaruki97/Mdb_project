@@ -1,4 +1,4 @@
-{"concerti":[{
+[{
 "nome" : "AnnalisaTour 2024",
 "artisiti":["Annalisa","Tananai"],
 "date":[{"$date":"2024-08-12"}],
@@ -59,5 +59,351 @@
                 41.88611895340705
             ],
             "type": "Point"
-        }}}   
-    ]}
+        }}},
+{
+"nome" : "NuovoLiga",
+"artisiti":["Ligabue"],
+"date":[{"$date":"2024-09-15"}],
+"orario":["20:00"],
+"biglietti_disp":[1000],
+"costo_biglietto":[70],
+"nome_luogo":"Circo Massimo",
+"location":{"geometry": {
+            "coordinates": [
+                12.48542678463889,
+                41.88611895340705
+            ],
+            "type": "Point"
+        }}},
+        {
+            "nome": "Rock Symphony",
+            "artisti": ["U2", "Vasco Rossi"],
+            "date": [{"$date": "2024-08-20"}, {"$date": "2024-08-21"}],
+            "orario": ["20:00", "21:00"],
+            "biglietti_disp": [12000, 12000],
+            "costo_biglietto": [80, 90],
+            "nome_luogo": "Stadio Olimpico",
+            "location": {
+                "geometry": {
+                    "coordinates": [12.454821495240992, 41.93439511656484],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Pop Explosion",
+            "artisti": ["Ed Sheeran", "Giorgia"],
+            "date": [{"$date": "2024-09-01"}],
+            "orario": ["21:00"],
+            "biglietti_disp": [8000],
+            "costo_biglietto": [75],
+            "nome_luogo": "San Siro Stadium",
+            "location": {
+                "geometry": {
+                    "coordinates": [9.123803467013573, 45.47817362507877],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Summer Vibes",
+            "artisti": ["Jovanotti", "The Chainsmokers"],
+            "date": [{"$date": "2024-08-25"}, {"$date": "2024-08-26"}],
+            "orario": ["22:00", "21:30"],
+            "biglietti_disp": [9000, 9000],
+            "costo_biglietto": [70, 80],
+            "nome_luogo": "Piazza del Popolo",
+            "location": {
+                "geometry": {
+                    "coordinates": [12.476123443030872, 41.9113010134937],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Electro Festival",
+            "artisti": ["Martin Garrix", "Benassi Bros"],
+            "date": [{"$date": "2024-09-07"}, {"$date": "2024-09-08"}],
+            "orario": ["22:30", "22:00"],
+            "biglietti_disp": [15000, 15000],
+            "costo_biglietto": [60, 70],
+            "nome_luogo": "Unipol Arena",
+            "location": {
+                "geometry": {
+                    "coordinates": [11.24796940638251, 44.48600546327046],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Italian Legends",
+            "artisti": ["Eros Ramazzotti", "Laura Pausini"],
+            "date": [{"$date": "2024-09-10"}],
+            "orario": ["20:30"],
+            "biglietti_disp": [6000],
+            "costo_biglietto": [85],
+            "nome_luogo": "Stadio Diego Armando Maradona",
+            "location": {
+                "geometry": {
+                    "coordinates": [14.192940747995522, 40.82810230536322],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Rap Fusion",
+            "artisti": ["Drake", "Salmo"],
+            "date": [{"$date": "2024-09-05"}],
+            "orario": ["21:00"],
+            "biglietti_disp": [10000],
+            "costo_biglietto": [95],
+            "nome_luogo": "Allianz Stadium",
+            "location": {
+                "geometry": {
+                    "coordinates": [7.641203747997025, 45.10969258738476],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Urban Beats",
+            "artisti": ["Post Malone", "Ghali"],
+            "date": [{"$date": "2024-08-28"}],
+            "orario": ["20:30"],
+            "biglietti_disp": [11000],
+            "costo_biglietto": [85],
+            "nome_luogo": "Giardini Margherita",
+            "location": {
+                "geometry": {
+                    "coordinates": [11.35260947781731, 44.48324728505605],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Summer Rock Fest",
+            "artisti": ["Foo Fighters", "Imagine Dragons"],
+            "date": [{"$date": "2024-08-17"}],
+            "orario": ["21:00"],
+            "biglietti_disp": [13000],
+            "costo_biglietto": [90],
+            "nome_luogo": "Arena Flegrea",
+            "location": {
+                "geometry": {
+                    "coordinates": [14.185599406382892, 40.82576044634689],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Eternal Love",
+            "artisti": ["Andrea Bocelli", "Il Volo"],
+            "date": [{"$date": "2024-09-03"}],
+            "orario": ["20:00"],
+            "biglietti_disp": [5000],
+            "costo_biglietto": [100],
+            "nome_luogo": "Piazza San Carlo",
+            "location": {
+                "geometry": {
+                    "coordinates": [7.682524016318382, 45.06781693059651],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Mediterranean Vibes",
+            "artisti": ["Maluma", "Emma Marrone"],
+            "date": [{"$date": "2024-08-22"}],
+            "orario": ["21:30"],
+            "biglietti_disp": [8500],
+            "costo_biglietto": [80],
+            "nome_luogo": "Piazza del Plebiscito",
+            "location": {
+                "geometry": {
+                    "coordinates": [14.248877703793028, 40.83629125129082],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Classic Rhapsody",
+            "artisti": ["Luciano Pavarotti", "Anna Netrebko"],
+            "date": [{"$date": "2024-09-14"}],
+            "orario": ["20:30"],
+            "biglietti_disp": [4000],
+            "costo_biglietto": [120],
+            "nome_luogo": "Teatro alla Scala",
+            "location": {
+                "geometry": {
+                    "coordinates": [9.192546497366468, 45.46771643059096],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Reggae Jam",
+            "artisti": ["Bob Marley Tribute Band", "Alborosie"],
+            "date": [{"$date": "2024-08-29"}],
+            "orario": ["22:00"],
+            "biglietti_disp": [7000],
+            "costo_biglietto": [70],
+            "nome_luogo": "Campo de' Fiori",
+            "location": {
+                "geometry": {
+                    "coordinates": [12.472039552960013, 41.89575937380209],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Summer Dance Party",
+            "artisti": ["Calvin Harris", "David Guetta"],
+            "date": [{"$date": "2024-08-31"}],
+            "orario": ["21:30"],
+            "biglietti_disp": [10000],
+            "costo_biglietto": [90],
+            "nome_luogo": "Alcatraz Milano",
+            "location": {
+                "geometry": {
+                    "coordinates": [9.18287094302761, 45.4946968985939],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Italian Pop Extravaganza",
+            "artisti": ["Elisa", "Biagio Antonacci"],
+            "date": [{"$date": "2024-09-06"}],
+            "orario": ["20:00"],
+            "biglietti_disp": [6000],
+            "costo_biglietto": [75],
+            "nome_luogo": "Giardini Reali",
+            "location": {
+                "geometry": {
+                    "coordinates": [7.689507254306278, 45.072518188612065],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Country Roads",
+            "artisti": ["Kenny Rogers", "Dolly Parton"],
+            "date": [{"$date": "2024-09-09"}],
+            "orario": ["19:30"],
+            "biglietti_disp": [3000],
+            "costo_biglietto": [110],
+            "nome_luogo": "Teatro Romano",
+            "location": {
+                "geometry": {
+                    "coordinates": [10.92681638463811, 45.4366483256229],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Folk Fusion",
+            "artisti": ["Mumford & Sons", "Paolo Nutini"],
+            "date": [{"$date": "2024-08-23"}],
+            "orario": ["20:30"],
+            "biglietti_disp": [8000],
+            "costo_biglietto": [85],
+            "nome_luogo": "Fabrique Milano",
+            "location": {
+                "geometry": {
+                    "coordinates": [9.252171906314487, 45.45249180520145],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Jazz in the Park",
+            "artisti": ["Norah Jones", "Gregory Porter"],
+            "date": [{"$date": "2024-08-24"}],
+            "orario": ["19:00"],
+            "biglietti_disp": [5000],
+            "costo_biglietto": [95],
+            "nome_luogo": "Villa Borghese",
+            "location": {
+                "geometry": {
+                    "coordinates": [12.488269947367086, 41.91335131652718],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Latin Fiesta",
+            "artisti": ["Ricky Martin", "Gloria Estefan"],
+            "date": [{"$date": "2024-09-12"}],
+            "orario": ["21:30"],
+            "biglietti_disp": [7000],
+            "costo_biglietto": [90],
+            "nome_luogo": "Teatro Greco",
+            "location": {
+                "geometry": {
+                    "coordinates": [13.361860947367875, 38.18889131652811],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Indie Rocks!",
+            "artisti": ["Arctic Monkeys", "Tame Impala"],
+            "date": [{"$date": "2024-09-13"}],
+            "orario": ["20:30"],
+            "biglietti_disp": [8500],
+            "costo_biglietto": [80],
+            "nome_luogo": "Piazza Verdi",
+            "location": {
+                "geometry": {
+                    "coordinates": [11.350516284638132, 44.496266921730154],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Electronic Fusion",
+            "artisti": ["Deadmau5", "Skrillex"],
+            "date": [{"$date": "2024-08-27"}],
+            "orario": ["22:00"],
+            "biglietti_disp": [12000],
+            "costo_biglietto": [75],
+            "nome_luogo": "Stadio Tardini",
+            "location": {
+                "geometry": {
+                    "coordinates": [10.325693784638617, 44.79916515355231],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Classical Serenade",
+            "artisti": ["Yo-Yo Ma", "Lang Lang"],
+            "date": [{"$date": "2024-09-02"}],
+            "orario": ["20:00"],
+            "biglietti_disp": [6000],
+            "costo_biglietto": [100],
+            "nome_luogo": "Teatro alla Scala",
+            "location": {
+                "geometry": {
+                    "coordinates": [9.192546497366468, 45.46771643059096],
+                    "type": "Point"
+                }
+            }
+        },
+        {
+            "nome": "Gospel Extravaganza",
+            "artisti": ["Kirk Franklin", "CeCe Winans"],
+            "date": [{"$date": "2024-09-11"}],
+            "orario": ["19:30"],
+            "biglietti_disp": [5000],
+            "costo_biglietto": [90],
+            "nome_luogo": "Duomo di Milano",
+            "location": {
+                "geometry": {
+                    "coordinates": [9.190347584638467, 45.46410205159013],
+                    "type": "Point"
+                }
+            }
+        }
+    ]
+    
