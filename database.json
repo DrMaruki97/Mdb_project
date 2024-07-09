@@ -1,0 +1,63 @@
+{"concerti":[{
+"nome" : "AnnalisaTour 2024",
+"artisiti":["Annalisa","Tananai"],
+"date":["2024-08-12"],
+"orario":["21:30"],
+"biglietti_disp":[1000],
+"costo_biglietto":[50],
+"nome_luogo":"Mediolanum Forum",
+"location":{"geometry": {
+            "coordinates": [
+                9.142893788438244,
+                45.40174126446283
+            ],
+            "type": "Point"
+        }}},
+
+{
+"nome" : "SferaStadio",
+"artisiti":["Sfera Ebbasta"],
+"date":[2024-08-13,2024-08-14,2024-08-15],
+"orario":["21:30","21.00","22.00"],
+"biglietti_disp":[10000,10000,10000],
+"costo_biglietto":[60,60,100],
+"nome_luogo":"San Siro Stadium",
+"location":{"geometry": {
+            "coordinates": [
+                9.123803467013573,
+                45.47817362507877
+            ],
+            "type": "Point"
+        }}},
+{
+"nome" : "Estate SAD",
+"artisiti":["La Sad"],
+"date":[2024-09-11],
+"orario":["21:30"],
+"biglietti_disp":[700],
+"costo_biglietto":[45],
+"nome_luogo":"Fabrique Milano",
+"location":{"geometry": {
+            "coordinates": [
+                9.252171906314487,
+                45.45249180520145
+            ],
+            "type": "Point"
+        }}},
+
+{
+"nome" : "NuovoLiga",
+"artisiti":["Ligabue"],
+"date":[2024-09-15],
+"orario":["20:00"],
+"biglietti_disp":[1000],
+"costo_biglietto":[70],
+"nome_luogo":"Circo Massimo",
+"location":{"geometry": {
+            "coordinates": [
+                12.48542678463889,
+                41.88611895340705
+            ],
+            "type": "Point"
+        }}}   
+    ]}
