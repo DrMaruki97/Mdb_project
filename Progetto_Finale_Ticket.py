@@ -21,6 +21,7 @@ def concert_info_menu():
         print("5. Torna al menu principale")
         
         choice = input("Scegli un'opzione: ")
+        clear_screen()
         
         if choice == '1':
             concert_info['artista'] = input("Inserisci il nome dell'artista: ")
@@ -51,6 +52,7 @@ def main_menu():
         print("2. Esci")
         
         scelta = input("\nInserisci il numero dell'opzione desiderata: ")
+        clear_screen()
 
         if scelta == '1':
             concert_info_menu()
