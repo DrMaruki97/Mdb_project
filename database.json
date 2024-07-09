@@ -1,7 +1,7 @@
 {"concerti":[{
 "nome" : "AnnalisaTour 2024",
 "artisiti":["Annalisa","Tananai"],
-"date":["2024-08-12"],
+"date":[{"$date":"2024-08-12"}],
 "orario":["21:30"],
 "biglietti_disp":[1000],
 "costo_biglietto":[50],
@@ -17,7 +17,7 @@
 {
 "nome" : "SferaStadio",
 "artisiti":["Sfera Ebbasta"],
-"date":[2024-08-13,2024-08-14,2024-08-15],
+"date":[{"$date":"2024-08-13"},{"$date":"2024-08-14"},{"$date":"2024-08-15"}],
 "orario":["21:30","21.00","22.00"],
 "biglietti_disp":[10000,10000,10000],
 "costo_biglietto":[60,60,100],
@@ -32,7 +32,7 @@
 {
 "nome" : "Estate SAD",
 "artisiti":["La Sad"],
-"date":[2024-09-11],
+"date":[{"$date":"2024-09-11"}],
 "orario":["21:30"],
 "biglietti_disp":[700],
 "costo_biglietto":[45],
@@ -48,7 +48,7 @@
 {
 "nome" : "NuovoLiga",
 "artisiti":["Ligabue"],
-"date":[2024-09-15],
+"date":[{"$date":"2024-09-15"}],
 "orario":["20:00"],
 "biglietti_disp":[1000],
 "costo_biglietto":[70],
