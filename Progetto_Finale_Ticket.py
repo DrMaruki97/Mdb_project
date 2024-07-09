@@ -27,9 +27,9 @@ def connect_to_mongo():
 # Funzione per cercare i concerti per artista
 def search_concerts_by_artist(artist_name):
     client = connect_to_mongo()
-    db = client['concerts_db']
-    collection = db['concerts']
-    concerts = collection.find({"artista": artist_name})
+    db = client['Mongo_DB_Data_Lake']
+    collection = db['Concerti']
+    concerts = collection.find({"artisiti": artist_name})
     client.close()
     return concerts
 
@@ -75,4 +75,3 @@ def main_menu():
 if __name__ == "__main__":
     main_menu()
 
-abracadabra
