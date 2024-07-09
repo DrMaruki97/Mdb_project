@@ -1,8 +1,6 @@
 {
-  "type": "FeatureCollection",
   "features": [
     {
-      "type": "Feature",
       "properties": {
         "Name": "Mediolanum Forum"
       },
@@ -11,9 +9,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "San Siro Stadium"
       },
@@ -22,9 +18,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Stadio Olimpico"
       },
@@ -33,9 +27,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Circo Massimo"
       },
@@ -44,9 +36,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Piazza del Popolo"
       },
@@ -55,9 +45,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Campo de' Fiori"
       },
@@ -66,9 +54,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Fabrique Milano"
       },
@@ -77,9 +63,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Alcatraz Milano"
       },
@@ -88,9 +72,7 @@
         "type": "Point"
       }
     },
-    
     {
-      "type": "Feature",
       "properties": {
         "Name": "Piazza del Plebiscito"
       },
@@ -98,8 +80,10 @@
         "coordinates": [14.248877703793028, 40.83629125129082],
         "type": "Point"
       }
-    },
-    
+    }
+  ]
+}
+
     {
       "type": "Feature",
       "properties": {
