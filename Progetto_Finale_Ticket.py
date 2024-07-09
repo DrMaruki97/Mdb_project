@@ -1,6 +1,6 @@
 import os
-from datetime import datetime
-from pymongo import MongoClient
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 # Funzione per pulire lo schermo
 def clear_screen():
@@ -12,56 +12,43 @@ def clear_screen():
 # Funzione per connettersi a MongoDB
 def connect_to_mongo():
     # Cambia l'URI con il tuo URI MongoDB
-    client = MongoClient("mongodb://localhost:27017/")
+    uri = "mongodb+srv://<username>:<password>@ufs13.9ag482l.mongodb.net/?retryWrites=true&w=majority&appName=UFS13"
+    client = MongoClient(uri, server_api=ServerApi('1'))
+    
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
+    
     return client
 
-# Funzione per inserire le informazioni del concerto nel database
-def insert_concert_info(concert_info):
+# Funzione per cercare i concerti per artista
+def search_concerts_by_artist(artist_name):
     client = connect_to_mongo()
     db = client['concerts_db']
     collection = db['concerts']
-    collection.insert_one(concert_info)
+    concerts = collection.find({"artista": artist_name})
     client.close()
+    return concerts
 
-# Funzione per cercare il concerto
-def concert_info_menu():
-    concert_info = {}
-    
-    while True:
-        print("\nOpzioni per inserire le informazioni del concerto:")
-        print("1. Nome dell'artista")
-        print("2. Nome del concerto")
-        print("3. Data del concerto")
-        print("4. Luogo del concerto")
-        print("5. Salva e torna al menu principale")
-        
-        choice = input("Scegli un'opzione: ")
-        clear_screen()
-        
-        if choice == '1':
-            concert_info['artista'] = input("Inserisci il nome dell'artista: ")
-        elif choice == '2':
-            concert_info['concerto'] = input("Inserisci il nome del concerto: ")
-        elif choice == '3':
-            concert_info['data'] = input("Inserisci la data del concerto (YYYY-MM-DD): ")
-        elif choice == '4':
-            concert_info['luogo'] = input("Inserisci il luogo del concerto: ")
-        elif choice == '5':
-            if 'data' in concert_info:
-                try:
-                    concert_info['data'] = datetime.strptime(concert_info['data'], "%Y-%m-%d")
-                except ValueError:
-                    print("Formato data non valido. Usa il formato YYYY-MM-DD.")
-                    continue
-            insert_concert_info(concert_info)
-            print("Informazioni del concerto salvate con successo!")
-            break
-        else:
-            print("Scelta non valida. Riprova.")
-        
-        print("\nInformazioni del concerto attuali:")
-        for key, value in concert_info.items():
-            print(f"{key.capitalize()}: {value}")
+# Funzione per visualizzare i concerti trovati
+def display_concerts(concerts):
+    for concert in concerts:
+        print("\nArtista: ", concert.get('artista', 'N/A'))
+        print("Concerto: ", concert.get('concerto', 'N/A'))
+        print("Data: ", concert.get('data', 'N/A').strftime("%Y-%m-%d") if concert.get('data') else 'N/A')
+        print("Luogo: ", concert.get('luogo', 'N/A'))
+        print("--------------")
+
+# Funzione per cercare concerti
+def search_concerts_menu():
+    artist_name = input("Inserisci il nome dell'artista da cercare: ")
+    concerts = search_concerts_by_artist(artist_name)
+    clear_screen()
+    display_concerts(concerts)
+    input("\nPremi INVIO per tornare al menu principale...")
 
 # Funzione principale del menu
 def main_menu():
@@ -70,14 +57,14 @@ def main_menu():
         print("Benvenuto!")
         print("===========")
         print("Opzioni disponibili:")
-        print("1. Cerca concerto")
+        print("1. Cerca concerti per artista")
         print("2. Esci")
         
         scelta = input("\nInserisci il numero dell'opzione desiderata: ")
         clear_screen()
 
         if scelta == '1':
-            concert_info_menu()
+            search_concerts_menu()
         elif scelta == '2':
             print("\nGrazie per aver usato l'applicazione.")
             break
