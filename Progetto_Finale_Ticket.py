@@ -8,26 +8,7 @@ def clear_screen():
     else:
         os.system('clear')  # Linux/Mac
 
-# Funzione per cercare concerti
-def cerca_concerto():
-    clear_screen()
-    print("Cerca un concerto")
-    print("================")
-
-    # Input dell'artista
-    artista = input("Artista che partecipa al concerto: ")
-
-    # Simuliamo la ricerca (puoi sostituire questa parte con la logica specifica al tuo caso)
-    print(f"\nRisultati della ricerca per '{artista}':")
-    print("===================================")
-    # Simulazione dei risultati trovati
-    print("Concerto 1: Artista - Ligabue, Nome - Campovolo 2024")
-    print("Concerto 2: Artista - Vasco Rossi, Nome - Live Kom 2024")
-    print("Concerto 3: Artista - Foo Fighters, Nome - World Tour 2024")
-
-    input("\nPremi INVIO per continuare...")
-
-# Funzione per inserire le informazioni del concerto
+# Funzione per cercare il concerto
 def concert_info_menu():
     concert_info = {}
     
@@ -67,16 +48,13 @@ def main_menu():
         print("===========")
         print("Opzioni disponibili:")
         print("1. Cerca concerto")
-        print("2. Inserisci informazioni del concerto")
-        print("3. Esci")
+        print("2. Esci")
         
         scelta = input("\nInserisci il numero dell'opzione desiderata: ")
 
         if scelta == '1':
-            cerca_concerto()
-        elif scelta == '2':
             concert_info_menu()
-        elif scelta == '3':
+        elif scelta == '2':
             print("\nGrazie per aver usato l'applicazione.")
             break
         else:
