@@ -27,7 +27,7 @@ def cerca_concerto():
 
     input("\nPremi INVIO per continuare...")
 
-# Funzione per avviare la sessione
+# Questa è la funzione per avviare la sessione
 def avvia_sessione():
     while True:
         clear_screen()
@@ -36,7 +36,7 @@ def avvia_sessione():
         print("Opzioni disponibili:")
         print("1. Cerca concerto")
         print("2. Esci")
-
+        
         scelta = input("\nInserisci il numero dell'opzione desiderata: ")
 
         if scelta == '1':
