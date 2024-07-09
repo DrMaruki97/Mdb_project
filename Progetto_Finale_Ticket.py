@@ -12,7 +12,7 @@ def clear_screen():
 # Funzione per connettersi a MongoDB
 def connect_to_mongo():
     # Cambia l'URI con il tuo URI MongoDB
-    uri = "mongodb+srv://<username>:<password>@ufs13.9ag482l.mongodb.net/?retryWrites=true&w=majority&appName=UFS13"
+    uri = "mongodb+srv://mongo:mongo@ufs13.9ag482l.mongodb.net/?retryWrites=true&w=majority&appName=UFS13"
     client = MongoClient(uri, server_api=ServerApi('1'))
     
     # Send a ping to confirm a successful connection
