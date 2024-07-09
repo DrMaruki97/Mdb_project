@@ -1,10 +1,8 @@
 from geopy.geocoders import Nominatim
 
 def get_coordinates(address):
-    # Utilizza un user_agent descrittivo
     geolocator = Nominatim(user_agent="find_coordinates")
-    
-    # Ottieni la localizzazione dell'indirizzo
+
     location = geolocator.geocode(address)
     
     if location:
@@ -12,8 +10,7 @@ def get_coordinates(address):
     else:
         return None
 
-# Esempio di utilizzo
-address = "Piazza del Colosseo, Roma, Italia"
+address = "Bellinzago Lombardo"
 coordinates = get_coordinates(address)
 
 if coordinates:
