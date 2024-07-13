@@ -1,0 +1,11 @@
+[
+  {
+    "_id": "1",
+    "nome": "Stadio Olimpico",
+    "coordinate": {
+      "type": "Point",
+      "coordinates": [12.4545, 41.9339] 
+    },
+    "indirizzo": "Piazzale del Foro Italico, 00135 Roma RM, Italia"
+  }
+]

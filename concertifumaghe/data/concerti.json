@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "1",
+    "nome": "Jova Beach Party",
+    "data": "2023-07-23",
+    "disp": 100,
+    "prezzo": 40.00,
+    "artista_id": "2",
+    "location_id": "1"
+  },
+  {
+    "_id": "2",
+    "nome": "Jova Beach Party",
+    "data": "2023-08-23",
+    "disp": 0,
+    "prezzo": 40.00,
+    "artista_id": "2",
+    "location_id": "1"
+  },
+  {
+    "_id": "3",
+    "nome": "Festival 1 Maggio",
+    "data": "2023-05-01",
+    "disp": 50,
+    "prezzo": 15.00,
+    "artista_id": "1",
+    "location_id": "1"
+  }
+]
