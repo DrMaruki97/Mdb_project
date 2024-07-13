@@ -16,20 +16,20 @@ def crea_concerto(username):
     if location:
         location_id = location["_id"]
     else:
-        location = geolocator.geocode(location_nome)
-        if not location:
+        location_geocode = geolocator.geocode(location_nome)
+        if not location_geocode:
             print(f"Impossibile trovare le coordinate per {location_nome}")
             return
         
-        location_id = f"{location_nome.replace(' ', '_')}_{location.latitude}_{location.longitude}"
+        location_id = f"{location_nome.replace(' ', '_')}_{location_geocode.latitude}_{location_geocode.longitude}"
         location_doc = {
             "_id": location_id,
             "nome": location_nome,
             "coordinate": {
                 "type": "Point",
-                "coordinates": [location.longitude, location.latitude]
+                "coordinates": [location_geocode.longitude, location_geocode.latitude]
             },
-            "indirizzo": location.address
+            "indirizzo": location_geocode.address
         }
         db.location.insert_one(location_doc)
 
@@ -58,9 +58,9 @@ def crea_concerto(username):
 
 def visualizza_situazione_biglietti(username):
     db = get_db()
-    concerti = db.concerti.find({"artista_id": username})
+    concerti = list(db.concerti.find({"artista_id": username}))
     
-    if concerti.count() == 0:
+    if len(concerti) == 0:
         print("Nessun concerto trovato per l'artista.")
         return
     
@@ -101,16 +101,16 @@ def duplica_concerto(username):
 
 def visualizza_utenti_biglietti(username):
     db = get_db()
-    concerti = db.concerti.find({"artista_id": username})
+    concerti = list(db.concerti.find({"artista_id": username}))
     
-    if concerti.count() == 0:
+    if len(concerti) == 0:
         print("Nessun concerto trovato per l'artista.")
         return
     
     for concerto in concerti:
         print(f"Concerto: {concerto['nome']}, Data: {concerto['data']}")
-        utenti = db.utenti.find({"biglietti.concerti_id": concerto['_id']})
-        if utenti.count() == 0:
+        utenti = list(db.utenti.find({"biglietti.concerti_id": concerto['_id']}))
+        if len(utenti) == 0:
             print("Nessun utente ha acquistato i biglietti per questo concerto.")
             continue
         for utente in utenti:

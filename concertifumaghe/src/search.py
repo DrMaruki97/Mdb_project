@@ -89,7 +89,10 @@ def cerca_concerto(username):
             prezzo_min = min(prezzi_disponibili) if prezzi_disponibili else 'N/A'
             disponibilita = 'Disponibile' if prezzi_disponibili else 'Sold Out'
             
-            print(f"{idx+1}: {concerto.get('nome')}, {concerto.get('data')}, {disponibilita}, Prezzi a partire da: {prezzo_min}€, Artista: {artista.get('nome', 'N/A')}, Location: {location.get('nome', 'N/A')}")
+            location_nome = location.get('nome', 'N/A') if location else 'N/A'
+            artista_nome = artista.get('nome', 'N/A') if artista else 'N/A'
+            
+            print(f"{idx+1}: {concerto.get('nome')}, {concerto.get('data')}, {disponibilita}, Prezzi a partire da: {prezzo_min}€, Artista: {artista_nome}, Location: {location_nome}")
         
         acquista_subito = input("Vuoi acquistare i biglietti per uno dei concerti trovati? (s/n): ")
         if acquista_subito.lower() == 's':
