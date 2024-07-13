@@ -44,10 +44,17 @@ def crea_concerto(username):
             "posti_disponibili": posti_disponibili
         })
 
+    artista_doc = db.artisti.find_one({"nome": username})
+    if not artista_doc:
+        print("Errore: Artista non trovato.")
+        return
+
+    artista_id = artista_doc["_id"]
+
     concerto = {
         "nome": nome_concerto,
         "data": data,
-        "artista_id": username,
+        "artista_id": artista_id,
         "location_id": location_id,
         "settori": settori
     }
@@ -57,7 +64,13 @@ def crea_concerto(username):
 
 def visualizza_situazione_biglietti(username):
     db = get_db()
-    concerti = list(db.concerti.find({"artista_id": username}))
+    artista_doc = db.artisti.find_one({"nome": username})
+    if not artista_doc:
+        print("Nessun artista trovato con questo nome.")
+        return
+    
+    artista_id = artista_doc["_id"]
+    concerti = list(db.concerti.find({"artista_id": artista_id}))
     
     if len(concerti) == 0:
         print("Nessun concerto trovato per l'artista.")
@@ -70,7 +83,13 @@ def visualizza_situazione_biglietti(username):
             
 def duplica_concerto(username):
     db = get_db()
-    concerti = list(db.concerti.find({"artista_id": username}))
+    artista_doc = db.artisti.find_one({"nome": username})
+    if not artista_doc:
+        print("Nessun artista trovato con questo nome.")
+        return
+    
+    artista_id = artista_doc["_id"]
+    concerti = list(db.concerti.find({"artista_id": artista_id}))
     
     if not concerti:
         print("Nessun concerto trovato per l'artista.")
@@ -100,7 +119,13 @@ def duplica_concerto(username):
 
 def visualizza_utenti_biglietti(username):
     db = get_db()
-    concerti = list(db.concerti.find({"artista_id": username}))
+    artista_doc = db.artisti.find_one({"nome": username})
+    if not artista_doc:
+        print("Nessun artista trovato con questo nome.")
+        return
+    
+    artista_id = artista_doc["_id"]
+    concerti = list(db.concerti.find({"artista_id": artista_id}))
     
     if len(concerti) == 0:
         print("Nessun concerto trovato per l'artista.")
@@ -108,7 +133,7 @@ def visualizza_utenti_biglietti(username):
     
     for concerto in concerti:
         print(f"Concerto: {concerto['nome']}, Data: {concerto['data']}")
-        utenti = list(db.utenti.find({"biglietti.concerti_id": concerto['_id']}))
+        utenti = list(db.utenti.find({"biglietti.concerto": concerto['nome']}))
         if len(utenti) == 0:
             print("Nessun utente ha acquistato i biglietti per questo concerto.")
             continue
