@@ -10,7 +10,6 @@ def crea_concerto(username):
     data = input("Data del concerto (AAAA-MM-GG): ")
     location_nome = input("Nome della location: ")
 
-    # Cerca la location nel database
     location = db.location.find_one({"nome": location_nome})
     
     if location:

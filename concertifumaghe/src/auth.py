@@ -24,9 +24,12 @@ def registra_utente(username, password, conferma_password, tipo):
         if artista_doc:
             concerti = list(db.concerti.find({"artista_id": artista_doc["_id"]}))
             db.artisti.update_one({"_id": artista_doc["_id"]}, {"$set": {"utente": username}})
-            db.utenti.update_one({"username": username}, {"$set": {"concerti": concerti}})
         else:
             db.artisti.insert_one({"_id": username, "nome": username})
+            concerti = list(db.concerti.find({"artista_id": username}))
+            if concerti:
+                for concerto in concerti:
+                    db.concerti.update_one({"_id": concerto["_id"]}, {"$set": {"artista_id": username}})
     
     print("Registrazione avvenuta con successo!")
     return True
