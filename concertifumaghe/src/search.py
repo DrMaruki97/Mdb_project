@@ -80,7 +80,13 @@ def cerca_concerto(username):
         for idx, concerto in enumerate(concerti):
             location = db.location.find_one({"_id": concerto["location_id"]})
             artista = db.artisti.find_one({"_id": concerto["artista_id"]})
-            print(f"{idx+1}: {concerto.get('nome')}, {concerto.get('data')}, disp:{concerto.get('disp', 'N/A')}, {concerto.get('prezzo', 'N/A')}€, Artista: {artista.get('nome', 'N/A')}, Location: {location.get('nome', 'N/A')}")
+            settori = concerto.get('settori', [])
+            
+            prezzi_disponibili = [settore['prezzo'] for settore in settori if settore['posti_disponibili'] > 0]
+            prezzo_min = min(prezzi_disponibili) if prezzi_disponibili else 'N/A'
+            disponibilita = 'Disponibile' if prezzi_disponibili else 'Sold Out'
+            
+            print(f"{idx+1}: {concerto.get('nome')}, {concerto.get('data')}, {disponibilita}, Prezzi a partire da: {prezzo_min}€, Artista: {artista.get('nome', 'N/A')}, Location: {location.get('nome', 'N/A')}")
         
         acquista_subito = input("Vuoi acquistare i biglietti per uno dei concerti trovati? (s/n): ")
         if acquista_subito.lower() == 's':
