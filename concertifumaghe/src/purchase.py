@@ -61,21 +61,19 @@ def acquista_biglietti(username, concerti=None):
     # Aggiorna i posti disponibili
     settore_scelto['posti_disponibili'] -= quantita
 
-    # Genera i biglietti e salva nel profilo utente
-    biglietti = []
-    for _ in range(quantita):
-        biglietto = {
-            "id": str(uuid.uuid4()),
-            "concerto": concerto_scelto['nome'],
-            "data": concerto_scelto['data'],
-            "settore": settore_scelto['nome'],
-            "prezzo": settore_scelto['prezzo']
-        }
-        biglietti.append(biglietto)
+    # Genera il biglietto e salva nel profilo utente
+    biglietto = {
+        "id": str(uuid.uuid4()),
+        "concerto": concerto_scelto['nome'],
+        "data": concerto_scelto['data'],
+        "settore": settore_scelto['nome'],
+        "prezzo": settore_scelto['prezzo'],
+        "quantita": quantita
+    }
 
     db.utenti.update_one(
         {"username": username},
-        {"$push": {"biglietti": {"$each": biglietti}}}
+        {"$push": {"biglietti": biglietto}}
     )
 
     # Aggiorna il concerto nel database
@@ -85,8 +83,7 @@ def acquista_biglietti(username, concerti=None):
     )
 
     print(f"I tuoi biglietti per un totale di {settore_scelto['prezzo'] * quantita}€:")
-    for biglietto in biglietti:
-        print(f"Codice: {biglietto['id']}, {biglietto['concerto']}, {biglietto['data']}, Settore: {biglietto['settore']}, Prezzo: {biglietto['prezzo']}€")
+    print(f"Codice: {biglietto['id']}, {biglietto['concerto']}, {biglietto['data']}, Settore: {biglietto['settore']}, Prezzo: {biglietto['prezzo']}€, Quantità: {biglietto['quantita']}")
     print(f"Saldo rimanente: {utente['saldo'] - settore_scelto['prezzo'] * quantita}€")
 
     db.utenti.update_one(
