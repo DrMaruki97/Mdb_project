@@ -1,5 +1,9 @@
 import pymongo
 import bcrypt
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 
 def get_db():
     uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
@@ -36,26 +40,42 @@ def visualizza_biglietti(username):
     utente = db.utenti.find_one({"username": username})
     biglietti = utente.get("biglietti", [])
     if biglietti:
-        concerti_acquistati = list(set([biglietto['concerto'] for biglietto in biglietti]))
-        print("Concerti acquistati:")
+        concerti_acquistati = list(set([biglietto.get('concerto', 'N/A') for biglietto in biglietti]))
+        table = Table(title="Concerti acquistati")
+        table.add_column("Index", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Concerto", style="magenta")
+        
         for idx, concerto in enumerate(concerti_acquistati):
-            print(f"{idx+1}: {concerto}")
+            table.add_row(str(idx + 1), concerto)
+        
+        console.print(table)
         
         try:
             scelta = int(input("Per quale concerto vuoi vedere i biglietti? ")) - 1
         except ValueError:
-            print("Inserisci un valore numerico valido.")
+            console.print("Inserisci un valore numerico valido.", style="red")
             return
 
         if scelta < 0 or scelta >= len(concerti_acquistati):
-            print("Scelta non valida.")
+            console.print("Scelta non valida.", style="red")
             return
 
         concerto_scelto = concerti_acquistati[scelta]
-        biglietti_concerto = [biglietto for biglietto in biglietti if biglietto['concerto'] == concerto_scelto]
+        biglietti_concerto = [biglietto for biglietto in biglietti if biglietto.get('concerto', 'N/A') == concerto_scelto]
 
-        print(f"Biglietti per {concerto_scelto}:")
+        table = Table(title=f"Biglietti per {concerto_scelto}")
+        table.add_column("Codice", style="cyan")
+        table.add_column("Data", style="magenta")
+        table.add_column("Settore", style="green")
+        table.add_column("Prezzo", justify="right", style="red")
+
         for biglietto in biglietti_concerto:
-            print(f"Codice: {biglietto['codice']}, Data: {biglietto['data']}, Settore: {biglietto['settore']}, Prezzo: {biglietto['prezzo']}€")
+            codice = biglietto.get('codice', 'N/A')
+            data = biglietto.get('data', 'N/A')
+            settore = biglietto.get('settore', 'N/A')
+            prezzo = biglietto.get('prezzo', 'N/A')
+            table.add_row(codice, data, settore, f"{prezzo}€")
+        
+        console.print(table)
     else:
-        print("Non hai biglietti acquistati.")
+        console.print("Non hai biglietti acquistati.", style="red")

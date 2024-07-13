@@ -1,17 +1,21 @@
+from rich.console import Console
+from rich.table import Table
 from search import cerca_concerto, acquista_biglietti
 from auth import registra_utente, login_utente
 from profile import modifica_nome, modifica_password, aggiungi_saldo, visualizza_biglietti
 from artist import crea_concerto, visualizza_situazione_biglietti, duplica_concerto, visualizza_utenti_biglietti
 from utils import get_db
 
+console = Console()
+
 def main():
     username = None
     tipo = None
-    
+
     while True:
         if not username:
-            print("1: Registrati")
-            print("2: Login")
+            console.print("1: [bold]Registrati[/bold]", style="cyan")
+            console.print("2: [bold]Login[/bold]", style="cyan")
             scelta = input("> ")
 
             if scelta == '1':
@@ -20,7 +24,7 @@ def main():
                 conferma_password = input("Conferma password: ")
                 tipo = input("Tipo di profilo (utente/artista): ")
                 if registra_utente(username, password, conferma_password, tipo):
-                    print("Registrazione avvenuta con successo!")
+                    console.print("Registrazione avvenuta con successo!", style="green")
                 else:
                     username = None
             elif scelta == '2':
@@ -34,10 +38,10 @@ def main():
                     username = None
         else:
             if tipo == "utente":
-                print("1: Cerca Concerto")
-                print("2: Acquista Biglietti")
-                print("3: Profilo")
-                print("4: Esci")
+                console.print("1: [bold]Cerca Concerto[/bold]", style="cyan")
+                console.print("2: [bold]Acquista Biglietti[/bold]", style="cyan")
+                console.print("3: [bold]Profilo[/bold]", style="cyan")
+                console.print("4: [bold]Esci[/bold]", style="cyan")
                 scelta = input("> ")
 
                 if scelta == '1':
@@ -46,11 +50,11 @@ def main():
                     acquista_biglietti(username)
                 elif scelta == '3':
                     while True:
-                        print("1: Modifica Nome")
-                        print("2: Modifica Password")
-                        print("3: Aggiungi Saldo")
-                        print("4: Visualizza Biglietti")
-                        print("5: Torna al menu principale")
+                        console.print("1: [bold]Modifica Nome[/bold]", style="cyan")
+                        console.print("2: [bold]Modifica Password[/bold]", style="cyan")
+                        console.print("3: [bold]Aggiungi Saldo[/bold]", style="cyan")
+                        console.print("4: [bold]Visualizza Biglietti[/bold]", style="cyan")
+                        console.print("5: [bold]Torna al menu principale[/bold]", style="cyan")
                         scelta_profilo = input("> ")
 
                         if scelta_profilo == '1':
@@ -67,26 +71,26 @@ def main():
                                 importo = int(input("Inserisci l'importo da aggiungere: "))
                                 aggiungi_saldo(username, importo)
                             except ValueError:
-                                print("Inserisci un valore numerico valido.")
+                                console.print("Inserisci un valore numerico valido.", style="red")
                         elif scelta_profilo == '4':
                             visualizza_biglietti(username)
                         elif scelta_profilo == '5':
                             break
                         else:
-                            print("Scelta non valida, riprova.")
+                            console.print("Scelta non valida, riprova.", style="red")
                 elif scelta == '4':
                     break
                 else:
-                    print("Scelta non valida, riprova.")
+                    console.print("Scelta non valida, riprova.", style="red")
             elif tipo == "artista":
-                print("1: Cerca Concerto")
-                print("2: Acquista Biglietti")
-                print("3: Crea Concerto")
-                print("4: Visualizza Situazione Biglietti")
-                print("5: Duplica Concerto")
-                print("6: Visualizza Utenti Biglietti")
-                print("7: Profilo")
-                print("8: Esci")
+                console.print("1: [bold]Cerca Concerto[/bold]", style="cyan")
+                console.print("2: [bold]Acquista Biglietti[/bold]", style="cyan")
+                console.print("3: [bold]Crea Concerto[/bold]", style="cyan")
+                console.print("4: [bold]Visualizza Situazione Biglietti[/bold]", style="cyan")
+                console.print("5: [bold]Duplica Concerto[/bold]", style="cyan")
+                console.print("6: [bold]Visualizza Utenti Biglietti[/bold]", style="cyan")
+                console.print("7: [bold]Profilo[/bold]", style="cyan")
+                console.print("8: [bold]Esci[/bold]", style="cyan")
                 scelta = input("> ")
 
                 if scelta == '1':
@@ -103,11 +107,11 @@ def main():
                     visualizza_utenti_biglietti(username)
                 elif scelta == '7':
                     while True:
-                        print("1: Modifica Nome")
-                        print("2: Modifica Password")
-                        print("3: Aggiungi Saldo")
-                        print("4: Visualizza Biglietti")
-                        print("5: Torna al menu principale")
+                        console.print("1: [bold]Modifica Nome[/bold]", style="cyan")
+                        console.print("2: [bold]Modifica Password[/bold]", style="cyan")
+                        console.print("3: [bold]Aggiungi Saldo[/bold]", style="cyan")
+                        console.print("4: [bold]Visualizza Biglietti[/bold]", style="cyan")
+                        console.print("5: [bold]Torna al menu principale[/bold]", style="cyan")
                         scelta_profilo = input("> ")
 
                         if scelta_profilo == '1':
@@ -124,17 +128,17 @@ def main():
                                 importo = int(input("Inserisci l'importo da aggiungere: "))
                                 aggiungi_saldo(username, importo)
                             except ValueError:
-                                print("Inserisci un valore numerico valido.")
+                                console.print("Inserisci un valore numerico valido.", style="red")
                         elif scelta_profilo == '4':
                             visualizza_biglietti(username)
                         elif scelta_profilo == '5':
                             break
                         else:
-                            print("Scelta non valida, riprova.")
+                            console.print("Scelta non valida, riprova.", style="red")
                 elif scelta == '8':
                     break
                 else:
-                    print("Scelta non valida, riprova.")
+                    console.print("Scelta non valida, riprova.", style="red")
 
 if __name__ == "__main__":
     main()
