@@ -31,7 +31,7 @@ def main():
             scelta = input("> ")
 
             if scelta == '1':
-                cerca_concerto()
+                cerca_concerto(username)
             elif scelta == '2':
                 acquista_biglietti(username)
             elif scelta == '3':

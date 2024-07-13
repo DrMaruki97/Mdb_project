@@ -9,7 +9,7 @@ def acquista_biglietti(username, concerti=None):
     db = get_db()
     if concerti is None:
         concerti = list(db.concerti.find())
-    
+
     if not concerti:
         print("Nessun concerto disponibile per l'acquisto.")
         return
