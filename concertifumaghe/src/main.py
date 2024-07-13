@@ -1,5 +1,4 @@
-from search import cerca_concerto
-from purchase import acquista_biglietti
+from search import cerca_concerto, acquista_biglietti
 
 def main():
     while True:
