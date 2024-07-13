@@ -18,8 +18,16 @@ def registra_utente(username, password, conferma_password, tipo):
     
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     db.utenti.insert_one({"username": username, "password": hashed, "tipo": tipo, "saldo": 0, "biglietti": []})
+    
     if tipo == "artista":
-        db.artisti.insert_one({"_id": username, "nome": username})
+        artista_doc = db.artisti.find_one({"nome": username})
+        if artista_doc:
+            concerti = list(db.concerti.find({"artista_id": artista_doc["_id"]}))
+            db.artisti.update_one({"_id": artista_doc["_id"]}, {"$set": {"utente": username}})
+            db.utenti.update_one({"username": username}, {"$set": {"concerti": concerti}})
+        else:
+            db.artisti.insert_one({"_id": username, "nome": username})
+    
     print("Registrazione avvenuta con successo!")
     return True
 
