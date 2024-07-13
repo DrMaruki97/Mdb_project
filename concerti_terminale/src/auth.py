@@ -1,5 +1,8 @@
 import bcrypt
 import pymongo
+from rich.console import Console
+
+console = Console()
 
 def get_db():
     uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
@@ -8,12 +11,12 @@ def get_db():
 
 def registra_utente(username, password, conferma_password, tipo):
     if password != conferma_password:
-        print("Le password non corrispondono.")
+        console.print("[red]Le password non corrispondono.[/red]")
         return False
     
     db = get_db()
     if db.utenti.find_one({"username": username}):
-        print("Username già esistente.")
+        console.print("[red]Username già esistente.[/red]")
         return False
     
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -33,7 +36,7 @@ def registra_utente(username, password, conferma_password, tipo):
                 for concerto in concerti:
                     db.concerti.update_one({"_id": concerto["_id"]}, {"$set": {"artista_id": artista_id}})
     
-    print("Registrazione avvenuta con successo!")
+    console.print("[green]Registrazione avvenuta con successo![/green]")
     return True
 
 def login_utente(username, password):
@@ -41,12 +44,12 @@ def login_utente(username, password):
     utente = db.utenti.find_one({"username": username})
     
     if not utente:
-        print("Username non trovato.")
+        console.print("[red]Username non trovato.[/red]")
         return False
     
     if bcrypt.checkpw(password.encode('utf-8'), utente["password"]):
-        print("Login effettuato con successo!")
+        console.print("[green]Login effettuato con successo![/green]")
         return True
     else:
-        print("Password errata.")
+        console.print("[red]Password errata.[/red]")
         return False

@@ -1,6 +1,11 @@
 import pymongo
 from geopy.geocoders import Nominatim
 from purchase import acquista_biglietti
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel  # Aggiunta importazione di Panel
+
+console = Console()
 
 def get_db():
     uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
@@ -18,10 +23,7 @@ def get_coordinates(address):
 
 def cerca_concerto(username):
     db = get_db()
-    print("Trova i tuoi concerti preferiti tra 254 disponibili:")
-    print("a: Per Artista")
-    print("b: Per Date")
-    print("v: Per Vicinanza")
+    console.print(Panel("Trova i tuoi concerti preferiti tra 254 disponibili:\na: Per Artista\nb: Per Date\nv: Per Vicinanza", title="Cerca Concerto", style="cyan"))
     scelta = input("> ")
 
     query = {}
@@ -32,7 +34,7 @@ def cerca_concerto(username):
         artisti_ids = [artista_doc["_id"] for artista_doc in artisti_docs]
         
         if not artisti_ids:
-            print("Nessun artista trovato.")
+            console.print("[red]Nessun artista trovato.[/red]")
             return
 
         query["artista_id"] = {"$in": artisti_ids}
@@ -45,7 +47,7 @@ def cerca_concerto(username):
         address = input("Inserisci l'indirizzo: ")
         coordinates = get_coordinates(address)
         if not coordinates:
-            print(f"Impossibile ottenere le coordinate per {address}")
+            console.print(f"[red]Impossibile ottenere le coordinate per {address}[/red]")
             return
         
         lat, lon = coordinates
@@ -64,22 +66,30 @@ def cerca_concerto(username):
             if db.concerti.count_documents(query) > 0:
                 break
             else:
-                print(f"Nessun concerto trovato entro {distanza} km.")
+                console.print(f"[red]Nessun concerto trovato entro {distanza} km.[/red]")
                 scelta = input("Vuoi estendere la distanza di ricerca? (s/n): ")
                 if scelta.lower() != 's':
                     return
                 try:
                     distanza = int(input("Inserisci una nuova distanza in km per estendere la ricerca: "))
                 except ValueError:
-                    print("Inserisci un valore numerico.")
+                    console.print("[red]Inserisci un valore numerico.[/red]")
                     continue
 
     concerti = list(db.concerti.find(query))
 
     if not concerti:
-        print("Nessun concerto trovato.")
+        console.print("[red]Nessun concerto trovato.[/red]")
     else:
-        print("Concerti trovati:")
+        table = Table(title="Concerti trovati")
+        table.add_column("Index", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Concerto", style="magenta")
+        table.add_column("Data", style="green")
+        table.add_column("Disponibilità", style="red")
+        table.add_column("Prezzi a partire da", style="yellow")
+        table.add_column("Artista", style="blue")
+        table.add_column("Location", style="blue")
+
         for idx, concerto in enumerate(concerti):
             location = db.location.find_one({"_id": concerto["location_id"]})
             artista = db.artisti.find_one({"_id": concerto["artista_id"]})
@@ -92,8 +102,10 @@ def cerca_concerto(username):
             location_nome = location.get('nome', 'N/A') if location else 'N/A'
             artista_nome = artista.get('nome', 'N/A') if artista else 'N/A'
             
-            print(f"{idx+1}: {concerto.get('nome')}, {concerto.get('data')}, {disponibilita}, Prezzi a partire da: {prezzo_min}€, Artista: {artista_nome}, Location: {location_nome}")
+            table.add_row(str(idx + 1), concerto.get('nome'), concerto.get('data'), disponibilita, f"{prezzo_min}€", artista_nome, location_nome)
         
+        console.print(table)
+
         acquista_subito = input("Vuoi acquistare i biglietti per uno dei concerti trovati? (s/n): ")
         if acquista_subito.lower() == 's':
             acquista_biglietti(username, concerti)

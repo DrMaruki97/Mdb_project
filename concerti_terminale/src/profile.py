@@ -13,11 +13,11 @@ def get_db():
 def modifica_nome(username, nuovo_nome):
     db = get_db()
     db.utenti.update_one({"username": username}, {"$set": {"username": nuovo_nome}})
-    print("Nome aggiornato con successo!")
+    console.print("[green]Nome aggiornato con successo![/green]")
 
 def modifica_password(username, vecchia_password, nuova_password, conferma_password):
     if nuova_password != conferma_password:
-        print("Le nuove password non corrispondono.")
+        console.print("[red]Le nuove password non corrispondono.[/red]")
         return
     
     db = get_db()
@@ -26,14 +26,14 @@ def modifica_password(username, vecchia_password, nuova_password, conferma_passw
     if bcrypt.checkpw(vecchia_password.encode('utf-8'), utente["password"]):
         hashed = bcrypt.hashpw(nuova_password.encode('utf-8'), bcrypt.gensalt())
         db.utenti.update_one({"username": username}, {"$set": {"password": hashed}})
-        print("Password aggiornata con successo!")
+        console.print("[green]Password aggiornata con successo![/green]")
     else:
-        print("Vecchia password errata.")
+        console.print("[red]Vecchia password errata.[/red]")
 
 def aggiungi_saldo(username, importo):
     db = get_db()
     db.utenti.update_one({"username": username}, {"$inc": {"saldo": importo}})
-    print(f"{importo}€ aggiunti al saldo.")
+    console.print(f"[green]{importo}€ aggiunti al saldo.[/green]")
 
 def visualizza_biglietti(username):
     db = get_db()
@@ -53,11 +53,11 @@ def visualizza_biglietti(username):
         try:
             scelta = int(input("Per quale concerto vuoi vedere i biglietti? ")) - 1
         except ValueError:
-            console.print("Inserisci un valore numerico valido.", style="red")
+            console.print("[red]Inserisci un valore numerico valido.[/red]")
             return
 
         if scelta < 0 or scelta >= len(concerti_acquistati):
-            console.print("Scelta non valida.", style="red")
+            console.print("[red]Scelta non valida.[/red]")
             return
 
         concerto_scelto = concerti_acquistati[scelta]
@@ -78,4 +78,4 @@ def visualizza_biglietti(username):
         
         console.print(table)
     else:
-        console.print("Non hai biglietti acquistati.", style="red")
+        console.print("[red]Non hai biglietti acquistati.[/red]")

@@ -1,6 +1,10 @@
 import json
 from pymongo import MongoClient
 import os
+from rich.console import Console
+from rich.panel import Panel  # Aggiunta importazione di Panel
+
+console = Console()
 
 def carica_dati():
     uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
@@ -21,7 +25,7 @@ def carica_dati():
         try:
             db.artisti.insert_many(artisti, ordered=False)
         except Exception as e:
-            print(f"Errore durante l'inserimento degli artisti: {e}")
+            console.print(f"[red]Errore durante l'inserimento degli artisti: {e}[/red]")
 
     # Caricare dati concerti
     with open(os.path.join(data_path, "concerti.json")) as f:
@@ -29,7 +33,7 @@ def carica_dati():
         try:
             db.concerti.insert_many(concerti, ordered=False)
         except Exception as e:
-            print(f"Errore durante l'inserimento dei concerti: {e}")
+            console.print(f"[red]Errore durante l'inserimento dei concerti: {e}[/red]")
 
     # Caricare dati location
     with open(os.path.join(data_path, "location.json")) as f:
@@ -37,12 +41,12 @@ def carica_dati():
         try:
             db.location.insert_many(location, ordered=False)
         except Exception as e:
-            print(f"Errore durante l'inserimento delle location: {e}")
+            console.print(f"[red]Errore durante l'inserimento delle location: {e}[/red]")
 
     # Creazione indice geospaziale
     db.location.create_index([("coordinate", "2dsphere")])
 
-    print("Dati caricati con successo e indice geospaziale creato!")
+    console.print("[green]Dati caricati con successo e indice geospaziale creato![/green]")
 
 if __name__ == "__main__":
     carica_dati()
