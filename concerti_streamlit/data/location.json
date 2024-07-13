@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "1",
+    "nome": "Stadio San Siro",
+    "coordinate": {
+      "type": "Point",
+      "coordinates": [9.124, 45.4781]
+    },
+    "indirizzo": "Piazzale Angelo Moratti, 20151 Milano MI, Italia"
+  },
+  {
+    "_id": "2",
+    "nome": "Stadio San Paolo",
+    "coordinate": {
+      "type": "Point",
+      "coordinates": [14.1916, 40.827]
+    },
+    "indirizzo": "Piazzale Vincenzo Tecchio, 80125 Napoli NA, Italia"
+  },
+  {
+    "_id": "3",
+    "nome": "Stadio Olimpico",
+    "coordinate": {
+      "type": "Point",
+      "coordinates": [12.4545, 41.9339]
+    },
+    "indirizzo": "Viale dei Gladiatori, 00135 Roma RM, Italia"
+  },
+  {
+    "_id": "4",
+    "nome": "Arena di Verona",
+    "coordinate": {
+      "type": "Point",
+      "coordinates": [10.9922, 45.4384]
+    },
+    "indirizzo": "Piazza Bra, 1, 37121 Verona VR, Italia"
+  },
+  {
+    "_id": "5",
+    "nome": "Unipol Arena",
+    "coordinate": {
+      "type": "Point",
+      "coordinates": [11.2395, 44.4949]
+    },
+    "indirizzo": "Via Gino Cervi, 2, 40033 Casalecchio di Reno BO, Italia"
+  }
+]
