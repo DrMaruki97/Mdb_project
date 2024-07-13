@@ -1,5 +1,58 @@
 [
-    {"_id": "1", "nome": "Ligabue"},
-    {"_id": "2", "nome": "Jova"}
-  ]
-  
+  {
+    "_id": "1",
+    "nome": "Jovanotti"
+  },
+  {
+    "_id": "2",
+    "nome": "Ligabue"
+  },
+  {
+    "_id": "3",
+    "nome": "Laura Pausini"
+  },
+  {
+    "_id": "4",
+    "nome": "Eros Ramazzotti"
+  },
+  {
+    "_id": "5",
+    "nome": "Zucchero"
+  },
+  {
+    "_id": "6",
+    "nome": "Tiziano Ferro"
+  },
+  {
+    "_id": "7",
+    "nome": "Gianna Nannini"
+  },
+  {
+    "_id": "8",
+    "nome": "Negramaro"
+  },
+  {
+    "_id": "9",
+    "nome": "Vasco Rossi"
+  },
+  {
+    "_id": "10",
+    "nome": "Elisa"
+  },
+  {
+    "_id": "11",
+    "nome": "Måneskin"
+  },
+  {
+    "_id": "12",
+    "nome": "Ludovico Einaudi"
+  },
+  {
+    "_id": "13",
+    "nome": "Giorgia"
+  },
+  {
+    "_id": "14",
+    "nome": "Pinguini Tattici Nucleari"
+  }
+]

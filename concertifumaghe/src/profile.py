@@ -36,8 +36,26 @@ def visualizza_biglietti(username):
     utente = db.utenti.find_one({"username": username})
     biglietti = utente.get("biglietti", [])
     if biglietti:
-        print("I tuoi biglietti acquistati:")
-        for biglietto in biglietti:
-            print(f"Concerto: {biglietto['concerto']}, Data: {biglietto['data']}, Quantità: {biglietto['quantita']}")
+        concerti_acquistati = list(set([biglietto['concerto'] for biglietto in biglietti]))
+        print("Concerti acquistati:")
+        for idx, concerto in enumerate(concerti_acquistati):
+            print(f"{idx+1}: {concerto}")
+        
+        try:
+            scelta = int(input("Per quale concerto vuoi vedere i biglietti? ")) - 1
+        except ValueError:
+            print("Inserisci un valore numerico valido.")
+            return
+
+        if scelta < 0 or scelta >= len(concerti_acquistati):
+            print("Scelta non valida.")
+            return
+
+        concerto_scelto = concerti_acquistati[scelta]
+        biglietti_concerto = [biglietto for biglietto in biglietti if biglietto['concerto'] == concerto_scelto]
+
+        print(f"Biglietti per {concerto_scelto}:")
+        for biglietto in biglietti_concerto:
+            print(f"Codice: {biglietto['codice']}, Data: {biglietto['data']}, Settore: {biglietto['settore']}, Prezzo: {biglietto['prezzo']}€")
     else:
         print("Non hai biglietti acquistati.")
