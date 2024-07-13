@@ -5,9 +5,10 @@ def get_db():
     client = pymongo.MongoClient(uri)
     return client["concerti_biglietti"]
 
-def acquista_biglietti():
+def acquista_biglietti(username, concerti=None):
     db = get_db()
-    concerti = list(db.concerti.find())
+    if concerti is None:
+        concerti = list(db.concerti.find())
     
     if not concerti:
         print("Nessun concerto disponibile per l'acquisto.")
@@ -32,15 +33,36 @@ def acquista_biglietti():
 
     concerto = concerti[concerto_id]
     disponibilita = concerto.get('disp', 0)
-    
+    prezzo_totale = concerto.get('prezzo', 0) * quantita
+
+    utente = db.utenti.find_one({"username": username})
+    saldo = utente.get("saldo", 0)
+
     if disponibilita >= quantita:
-        db.concerti.update_one(
-            {"_id": concerto["_id"]},
-            {"$inc": {"disp": -quantita}}
-        )
-        print(f"I tuoi biglietti per un totale di {concerto.get('prezzo', 0) * quantita}€:")
-        for i in range(quantita):
-            print(f"{concerto.get('nome')}, {concerto.get('data')}, n.{concerto['_id']}-{i+1}")
-        print(f"Disponibilità aggiornata: {disponibilita - quantita}")
+        if saldo >= prezzo_totale:
+            db.concerti.update_one(
+                {"_id": concerto["_id"]},
+                {"$inc": {"disp": -quantita}}
+            )
+            db.utenti.update_one(
+                {"username": username},
+                {
+                    "$inc": {"saldo": -prezzo_totale},
+                    "$push": {
+                        "biglietti": {
+                            "concerto": concerto.get('nome'),
+                            "data": concerto.get('data'),
+                            "quantita": quantita
+                        }
+                    }
+                }
+            )
+            print(f"I tuoi biglietti per un totale di {prezzo_totale}€:")
+            for i in range(quantita):
+                print(f"{concerto.get('nome')}, {concerto.get('data')}, n.{concerto['_id']}-{i+1}")
+            print(f"Disponibilità aggiornata: {disponibilita - quantita}")
+            print(f"Saldo rimanente: {saldo - prezzo_totale}€")
+        else:
+            print("Saldo insufficiente.")
     else:
         print("Disponibilità insufficiente")
