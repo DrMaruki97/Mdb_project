@@ -28,12 +28,15 @@ def cerca_concerto(username):
     
     if scelta == 'a':
         artista = input("Artista ?: ")
-        artista_doc = db.artisti.find_one({"nome": artista})
-        if artista_doc:
-            query["artista_id"] = artista_doc["_id"]
-        else:
-            print("Artista non trovato.")
+        artisti_docs = db.artisti.find({"nome": {"$regex": artista, "$options": "i"}})
+        artisti_ids = [artista_doc["_id"] for artista_doc in artisti_docs]
+        
+        if not artisti_ids:
+            print("Nessun artista trovato.")
             return
+
+        query["artista_id"] = {"$in": artisti_ids}
+        
     elif scelta == 'b':
         data_inizio = input("Data inizio (AAAA-MM-GG): ")
         data_fine = input("Data fine (AAAA-MM-GG): ")
