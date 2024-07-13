@@ -6,7 +6,7 @@ def get_db():
     client = pymongo.MongoClient(uri)
     return client["concerti_biglietti"]
 
-def registra_utente(username, password, conferma_password):
+def registra_utente(username, password, conferma_password, tipo):
     if password != conferma_password:
         print("Le password non corrispondono.")
         return False
@@ -17,7 +17,9 @@ def registra_utente(username, password, conferma_password):
         return False
     
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-    db.utenti.insert_one({"username": username, "password": hashed, "saldo": 0, "biglietti": []})
+    db.utenti.insert_one({"username": username, "password": hashed, "tipo": tipo, "saldo": 0, "biglietti": []})
+    if tipo == "artista":
+        db.artisti.insert_one({"_id": username, "nome": username})
     print("Registrazione avvenuta con successo!")
     return True
 
