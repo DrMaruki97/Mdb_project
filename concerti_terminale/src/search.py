@@ -23,7 +23,7 @@ def get_coordinates(address):
 
 def cerca_concerto(username):
     db = get_db()
-    console.print(Panel("Trova i tuoi concerti preferiti tra 254 disponibili:\na: Per Artista\nb: Per Date\nv: Per Vicinanza", title="Cerca Concerto", style="cyan"))
+    console.print(Panel("Trova i tuoi concerti preferiti tra 254 disponibili:\na: Per Artista\nb: Per Date\nc: Per Nome\nv: Per Vicinanza", title="Cerca Concerto", style="cyan"))
     scelta = input("> ")
 
     query = {}
@@ -43,6 +43,11 @@ def cerca_concerto(username):
         data_inizio = input("Data inizio (AAAA-MM-GG): ")
         data_fine = input("Data fine (AAAA-MM-GG): ")
         query["data"] = {"$gte": data_inizio, "$lte": data_fine}
+    
+    elif scelta == 'c':
+        nome_concerto = input("Nome del concerto ?: ")
+        query["nome"] = {"$regex": nome_concerto, "$options": "i"}
+    
     elif scelta == 'v':
         address = input("Inserisci l'indirizzo: ")
         coordinates = get_coordinates(address)
