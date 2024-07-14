@@ -3,7 +3,8 @@ from geopy.geocoders import Nominatim
 from purchase import acquista_biglietti
 from rich.console import Console
 from rich.table import Table
-from rich.panel import Panel  # Aggiunta importazione di Panel
+from rich.panel import Panel
+from rich.style import Style
 
 console = Console()
 
@@ -95,19 +96,24 @@ def cerca_concerto(username):
         table.add_column("Artista", style="blue")
         table.add_column("Location", style="blue")
 
+        sold_out_style = Style(color="red", strike=True)
+
         for idx, concerto in enumerate(concerti):
             location = db.location.find_one({"_id": concerto["location_id"]})
             artista = db.artisti.find_one({"_id": concerto["artista_id"]})
             settori = concerto.get('settori', [])
             
             prezzi_disponibili = [settore['prezzo'] for settore in settori if settore['posti_disponibili'] > 0]
-            prezzo_min = min(prezzi_disponibili) if prezzi_disponibili else 'N/A'
+            prezzo_min = min(prezzi_disponibili) if prezzi_disponibili else 'Sold Out'
             disponibilita = 'Disponibile' if prezzi_disponibili else 'Sold Out'
             
             location_nome = location.get('nome', 'N/A') if location else 'N/A'
             artista_nome = artista.get('nome', 'N/A') if artista else 'N/A'
-            
-            table.add_row(str(idx + 1), concerto.get('nome'), concerto.get('data'), disponibilita, f"{prezzo_min}€", artista_nome, location_nome)
+
+            if disponibilita == 'Sold Out':
+                table.add_row(str(idx + 1), concerto.get('nome'), concerto.get('data'), disponibilita, prezzo_min, artista_nome, location_nome, style=sold_out_style)
+            else:
+                table.add_row(str(idx + 1), concerto.get('nome'), concerto.get('data'), disponibilita, f"{prezzo_min}€", artista_nome, location_nome)
         
         console.print(table)
 
