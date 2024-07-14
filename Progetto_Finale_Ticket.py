@@ -1,11 +1,18 @@
 import os
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
+import time
+from fuzzywuzzy import process # Trova artisti simili di nome a quello inserito
 
 # Connessione iniziale a MongoDB
-# Cambia l'URI con il tuo URI MongoDB
 uri = "mongodb+srv://mongo:mongo@ufs13.9ag482l.mongodb.net/?retryWrites=true&w=majority&appName=UFS13"
 client = MongoClient(uri, server_api=ServerApi('1'))
+
+# Funzione per ottenere il riferimento al database e alla collezione
+def get_collection():
+    db = client['Mongo_DB_Data_Lake']
+    collection = db['Concerti']
+    return collection
 
 # Funzione per pulire lo schermo
 def clear_screen():
@@ -16,24 +23,45 @@ def clear_screen():
 
 # Funzione per cercare i concerti per artista
 def search_concerts_by_artist(artist_name):
-    db = client['Mongo_DB_Data_Lake']
-    collection = db['Concerti']
+    collection = get_collection()
     concerts = collection.find({"artisiti": artist_name})
     return concerts
 
+# Funzione per cercare artisti simili
+def find_similar_artist(artist_name): # Provare con "SferaEbbasta"
+    collection = get_collection()
+    artists = collection.distinct("artisiti")
+    similar_artist, score = process.extractOne(artist_name, artists)
+    if score >= 80:  # 80% di somiglianza 
+        print(f"Forse stavi cercando {similar_artist}")
+        time.sleep(5)
+        return similar_artist
+    return None
+
 # Funzione per visualizzare i concerti trovati
 def display_concerts(concerts):
+    found = False
     for concert in concerts:
+        found = True
         print("\nArtista: ", concert['artisiti'])
         print("Concerto: ", concert['nome'])
         print("Data: ", concert['date'][0].strftime('%y-%m-%d'))
         print("Luogo: ", concert['nome_luogo'])
         print("--------------")
+    
+    if not found:
+        print("Nessun concerto trovato per l'artista specificato.")
 
 # Funzione per cercare concerti
 def search_concerts_menu():
     artist_name = input("Inserisci il nome dell'artista da cercare: ")
+    collection = get_collection()
     concerts = search_concerts_by_artist(artist_name)
+    if collection.count_documents({"artisiti": artist_name}) == 0:
+        similar_artist = find_similar_artist(artist_name)
+        if similar_artist:
+            print(f"Forse cercavi {similar_artist}")
+            concerts = search_concerts_by_artist(similar_artist)
     clear_screen()
     display_concerts(concerts)
     input("\nPremi INVIO per tornare al menu principale...")
@@ -62,4 +90,3 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
-
