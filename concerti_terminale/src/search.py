@@ -118,5 +118,8 @@ def cerca_concerto(username):
         console.print(table)
 
         acquista_subito = input("Vuoi acquistare i biglietti per uno dei concerti trovati? (s/n): ")
+        while acquista_subito.lower() not in ('s', 'n'):
+            console.print("[red]Scelta non valida, riprova.[/red]")
+            acquista_subito = input("Vuoi acquistare i biglietti per uno dei concerti trovati? (s/n): ")
         if acquista_subito.lower() == 's':
             acquista_biglietti(username, concerti)

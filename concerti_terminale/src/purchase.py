@@ -3,6 +3,8 @@ import uuid
 from utils import get_db
 from rich.console import Console
 from rich.table import Table
+from rich.style import Style
+from profile import rimuovi_saldo
 
 console = Console()
 
@@ -28,21 +30,27 @@ def acquista_biglietti(username, concerti=None):
     table.add_column("Artista", style="blue")
     table.add_column("Location", style="blue")
 
+    sold_out_style = Style(color="red", strike=True)
+
     for idx, concerto in enumerate(concerti):
         table.add_row(str(idx + 1), concerto['nome'], concerto['data'], concerto['artista_id'], concerto['location_id'])
         for settore in concerto['settori']:
-            table.add_row("", f"Settore: {settore['nome']}", f"Prezzo: {settore['prezzo']}€", f"Posti disponibili: {settore['posti_disponibili']}")
+            if settore['posti_disponibili'] == 0:
+                table.add_row("", f"Settore: {settore['nome']}", f"Prezzo: {settore['prezzo']}€", "Sold Out", style=sold_out_style)
+            else:
+                table.add_row("", f"Settore: {settore['nome']}", f"Prezzo: {settore['prezzo']}€", f"Posti disponibili: {settore['posti_disponibili']}")
     
     console.print(table)
 
-    try:
-        scelta_concerto = int(input("Per quale concerto vuoi acquistare? ")) - 1
-        if scelta_concerto < 0 or scelta_concerto >= len(concerti):
-            console.print("[red]Scelta non valida.[/red]")
-            return
-    except ValueError:
-        console.print("[red]Inserisci un valore numerico valido.[/red]")
-        return
+    while True:
+        try:
+            scelta_concerto = int(input("Per quale concerto vuoi acquistare? ")) - 1
+            if scelta_concerto < 0 or scelta_concerto >= len(concerti):
+                console.print("[red]Scelta non valida.[/red]")
+            else:
+                break
+        except ValueError:
+            console.print("[red]Inserisci un valore numerico valido.[/red]")
 
     concerto_scelto = concerti[scelta_concerto]
 
@@ -53,28 +61,46 @@ def acquista_biglietti(username, concerti=None):
     table.add_column("Posti disponibili", style="red")
 
     for idx, settore in enumerate(concerto_scelto['settori']):
-        table.add_row(str(idx + 1), settore['nome'], f"{settore['prezzo']}€", str(settore['posti_disponibili']))
+        if settore['posti_disponibili'] == 0:
+            table.add_row(str(idx + 1), settore['nome'], f"{settore['prezzo']}€", "Sold Out", style=sold_out_style)
+        else:
+            table.add_row(str(idx + 1), settore['nome'], f"{settore['prezzo']}€", str(settore['posti_disponibili']))
 
     console.print(table)
 
-    try:
-        scelta_settore = int(input("Per quale settore vuoi acquistare? ")) - 1
-        if scelta_settore < 0 or scelta_settore >= len(concerto_scelto['settori']):
-            console.print("[red]Scelta non valida.[/red]")
-            return
-    except ValueError:
-        console.print("[red]Inserisci un valore numerico valido.[/red]")
-        return
+    while True:
+        try:
+            scelta_settore = int(input("Per quale settore vuoi acquistare? ")) - 1
+            if scelta_settore < 0 or scelta_settore >= len(concerto_scelto['settori']):
+                console.print("[red]Scelta non valida.[/red]")
+            else:
+                break
+        except ValueError:
+            console.print("[red]Inserisci un valore numerico valido.[/red]")
 
     settore_scelto = concerto_scelto['settori'][scelta_settore]
 
-    try:
-        quantita = int(input("Quanti biglietti? "))
-        if quantita < 1 or quantita > settore_scelto['posti_disponibili']:
-            console.print("[red]Quantità non valida.[/red]")
-            return
-    except ValueError:
-        console.print("[red]Inserisci un valore numerico valido.[/red]")
+    if settore_scelto['posti_disponibili'] == 0:
+        console.print("[red]Questo settore è sold out.[/red]")
+        return
+
+    while True:
+        try:
+            quantita = int(input("Quanti biglietti? "))
+            if quantita < 1 or quantita > settore_scelto['posti_disponibili']:
+                console.print("[red]Quantità non valida.[/red]")
+            else:
+                break
+        except ValueError:
+            console.print("[red]Inserisci un valore numerico valido.[/red]")
+
+    costo_totale = settore_scelto['prezzo'] * quantita
+
+    if utente['saldo'] < costo_totale:
+        console.print("[red]Saldo insufficiente per completare l'acquisto. Aggiungi fondi al tuo saldo.[/red]")
+        return
+
+    if not rimuovi_saldo(username, costo_totale):
         return
 
     # Aggiorna i posti disponibili
@@ -113,9 +139,4 @@ def acquista_biglietti(username, concerti=None):
         table.add_row(biglietto['codice'], biglietto['concerto'], biglietto['data'], biglietto['settore'], f"{biglietto['prezzo']}€")
 
     console.print(table)
-    console.print(f"[green]Saldo rimanente: {utente['saldo'] - settore_scelto['prezzo'] * quantita}€[/green]")
-
-    db.utenti.update_one(
-        {"username": username},
-        {"$inc": {"saldo": -settore_scelto['prezzo'] * quantita}}
-    )
+    console.print(f"[green]Saldo rimanente: {utente['saldo'] - costo_totale}€[/green]")

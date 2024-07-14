@@ -79,3 +79,19 @@ def visualizza_biglietti(username):
         console.print(table)
     else:
         console.print("[red]Non hai biglietti acquistati.[/red]")
+
+
+def visualizza_saldo(username):
+    db = get_db()
+    utente = db.utenti.find_one({"username": username})
+    console.print(f"Il tuo saldo attuale è: [green]{utente['saldo']}€[/green]")
+
+def rimuovi_saldo(username, importo):
+    db = get_db()
+    utente = db.utenti.find_one({"username": username})
+    if utente['saldo'] < importo:
+        console.print("[red]Saldo insufficiente per completare l'operazione.[/red]")
+        return False
+    db.utenti.update_one({"username": username}, {"$inc": {"saldo": -importo}})
+    console.print(f"[green]{importo}€ rimossi dal saldo.[/green]")
+    return True
