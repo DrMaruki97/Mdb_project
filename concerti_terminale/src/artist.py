@@ -2,8 +2,8 @@ import pymongo
 from geopy.geocoders import Nominatim
 from rich.console import Console
 from rich.table import Table
-from rich.panel import Panel
 from utils import get_db
+import uuid
 
 console = Console()
 
@@ -130,7 +130,7 @@ def duplica_concerto(username):
     
     concerto_da_duplicare = concerti[scelta]
     nuovo_concerto = concerto_da_duplicare.copy()
-    nuovo_concerto['_id'] = None
+    nuovo_concerto['_id'] = str(uuid.uuid4())  # Genera un nuovo ID unico per il concerto duplicato
     nuovo_concerto['data'] = nuova_data
     
     db.concerti.insert_one(nuovo_concerto)
