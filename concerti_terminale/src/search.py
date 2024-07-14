@@ -1,4 +1,6 @@
 import pymongo
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from geopy.geocoders import Nominatim
 from purchase import acquista_biglietti
 from rich.console import Console
@@ -9,8 +11,9 @@ from rich.style import Style
 console = Console()
 
 def get_db():
-    uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
-    client = pymongo.MongoClient(uri)
+    uri = "mongodb+srv://lucagiovagnoli:t7g%5EFyi7zpN!Liw@ufs13.dsmvdrx.mongodb.net/"
+
+    client = MongoClient(uri, server_api=ServerApi('1'), tls=True, tlsAllowInvalidCertificates=True)
     return client["concerti_biglietti"]
 
 def get_coordinates(address):
