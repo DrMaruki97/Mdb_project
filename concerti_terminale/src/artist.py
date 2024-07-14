@@ -2,6 +2,7 @@ import pymongo
 from geopy.geocoders import Nominatim
 from rich.console import Console
 from rich.table import Table
+from rich.style import Style
 from utils import get_db
 import uuid
 
@@ -87,9 +88,15 @@ def visualizza_situazione_biglietti(username):
     table.add_column("Settore", style="green")
     table.add_column("Posti Rimanenti", style="red")
 
+    sold_out_style = Style(color="red", strike=True)
+
     for concerto in concerti:
         for settore in concerto['settori']:
-            table.add_row(concerto['nome'], concerto['data'], settore['nome'], str(settore['posti_disponibili']))
+            posti_rimanenti = settore['posti_disponibili']
+            if posti_rimanenti == 0:
+                table.add_row(concerto['nome'], concerto['data'], settore['nome'], "Sold Out", style=sold_out_style)
+            else:
+                table.add_row(concerto['nome'], concerto['data'], settore['nome'], str(posti_rimanenti))
     
     console.print(table)
             
