@@ -50,6 +50,17 @@ def find_similar_artist(artist_name):
         return similar_artist
     return None
 
+# Funzione per cercare nomi di concerti simili
+def find_similar_concert_name(concert_name):
+    collection = get_collection()
+    concert_names = collection.distinct("nome")
+    similar_concert, score = process.extractOne(concert_name, concert_names)
+    if score >= 80:  # 80% di somiglianza
+        print(f"Forse stavi cercando {similar_concert}")
+        time.sleep(5)
+        return similar_concert
+    return None
+
 # Funzione per visualizzare i concerti trovati
 def display_concerts(concerts):
     found = False
@@ -85,7 +96,6 @@ def search_concerts_menu():
             if collection.count_documents({"artisiti": artist_name}) == 0:
                 similar_artist = find_similar_artist(artist_name)
                 if similar_artist:
-                    print(f"Forse cercavi {similar_artist}")
                     concerts = search_concerts_by_artist(similar_artist)
             clear_screen()
             display_concerts(concerts)
@@ -93,13 +103,19 @@ def search_concerts_menu():
 
         elif scelta == '2':
             concert_name = input("Inserisci il nome del concerto da cercare: ")
+            collection = get_collection()
             concerts = search_concerts_by_name(concert_name)
+            if collection.count_documents({"nome": concert_name}) == 0:
+                similar_concert = find_similar_concert_name(concert_name)
+                if similar_concert:
+                    concerts = search_concerts_by_name(similar_concert)
             clear_screen()
             display_concerts(concerts)
             input("\nPremi INVIO per tornare al menu di ricerca...")
 
         elif scelta == '3':
             location_name = input("Inserisci la località del concerto da cercare: ")
+            collection = get_collection()
             concerts = search_concerts_by_location(location_name)
             clear_screen()
             display_concerts(concerts)
