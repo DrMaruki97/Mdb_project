@@ -3,8 +3,7 @@ import pymongo
 import bcrypt
 from rich.console import Console
 from rich.panel import Panel
-from utils import get_db
-from auth import registra_utente, login_utente
+from auth import registra_utente, login_utente, get_db
 from search import cerca_concerto
 from purchase import acquista_biglietti
 from profile import modifica_nome, modifica_password, aggiungi_saldo, visualizza_biglietti, visualizza_saldo, rimuovi_saldo
