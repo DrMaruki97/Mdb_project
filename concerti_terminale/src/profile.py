@@ -6,9 +6,9 @@ from rich.console import Console
 from rich.table import Table
 
 console = Console()
+
 def get_db():
     uri = "mongodb+srv://lucagiovagnoli:t7g%5EFyi7zpN!Liw@ufs13.dsmvdrx.mongodb.net/"
-
     client = MongoClient(uri, server_api=ServerApi('1'), tls=True, tlsAllowInvalidCertificates=True)
     return client["concerti_biglietti"]
 
@@ -81,7 +81,6 @@ def visualizza_biglietti(username):
         console.print(table)
     else:
         console.print("[red]Non hai biglietti acquistati.[/red]")
-
 
 def visualizza_saldo(username):
     db = get_db()

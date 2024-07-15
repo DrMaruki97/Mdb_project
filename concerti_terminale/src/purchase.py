@@ -1,10 +1,11 @@
 import pymongo
 import uuid
+import bcrypt
 from utils import get_db
 from rich.console import Console
 from rich.table import Table
 from rich.style import Style
-from profile import rimuovi_saldo
+from profile import rimuovi_saldo, aggiungi_saldo
 
 console = Console()
 
@@ -33,7 +34,12 @@ def acquista_biglietti(username, concerti=None):
     sold_out_style = Style(color="red", strike=True)
 
     for idx, concerto in enumerate(concerti):
-        table.add_row(str(idx + 1), concerto['nome'], concerto['data'], concerto['artista_id'], concerto['location_id'])
+        artista = db.artisti.find_one({"_id": concerto['artista_id']})
+        location = db.location.find_one({"_id": concerto['location_id']})
+        artista_nome = artista['nome'] if artista else 'N/A'
+        location_nome = location['nome'] if location else 'N/A'
+        
+        table.add_row(str(idx + 1), concerto['nome'], concerto['data'], artista_nome, location_nome)
         for settore in concerto['settori']:
             if settore['posti_disponibili'] == 0:
                 table.add_row("", f"Settore: {settore['nome']}", f"Prezzo: {settore['prezzo']}€", "Sold Out", style=sold_out_style)
@@ -140,3 +146,22 @@ def acquista_biglietti(username, concerti=None):
 
     console.print(table)
     console.print(f"[green]Saldo rimanente: {utente['saldo'] - costo_totale}€[/green]")
+
+    # Gestione del saldo dell'artista
+    artista = db.artisti.find_one({"_id": concerto_scelto['artista_id']})
+    artista_nome = artista['nome'] if artista else 'N/A'
+    artista_utente = db.utenti.find_one({"username": artista_nome})
+    
+    if artista_utente:
+        aggiungi_saldo(artista_nome, costo_totale)
+    else:
+        # Creare un nuovo account per l'artista con password predefinita "123"
+        hashed_password = bcrypt.hashpw("123".encode('utf-8'), bcrypt.gensalt())
+        nuovo_artista_utente = {
+            "username": artista_nome,
+            "password": hashed_password,
+            "saldo": costo_totale,
+            "tipo": "artista"
+        }
+        db.utenti.insert_one(nuovo_artista_utente)
+        console.print(f"[green]Creato nuovo account per l'artista {artista_nome} con saldo iniziale di {costo_totale}€ e password predefinita '123'[/green]")
