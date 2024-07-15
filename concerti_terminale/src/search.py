@@ -27,13 +27,13 @@ def get_coordinates(address):
 
 def cerca_concerto(username):
     db = get_db()
-    console.print(Panel("Trova i tuoi concerti preferiti tra 254 disponibili:\na: Per Artista\nb: Per Date\nc: Per Nome\nv: Per Vicinanza", title="Cerca Concerto", style="cyan"))
+    console.print(Panel("Trova i tuoi concerti preferiti tra quelli disponibili:\na: Per Artista\nb: Per Date\nc: Per Nome\nv: Per Vicinanza", title="Cerca Concerto", style="cyan"))
     scelta = input("> ")
 
     query = {}
     
     if scelta == 'a':
-        artista = input("Artista ?: ")
+        artista = input("Artista?: ")
         artisti_docs = db.artisti.find({"nome": {"$regex": artista, "$options": "i"}})
         artisti_ids = [artista_doc["_id"] for artista_doc in artisti_docs]
         
