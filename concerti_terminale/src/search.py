@@ -7,14 +7,9 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.style import Style
+from auth import get_db
 
 console = Console()
-
-def get_db():
-    uri = "mongodb+srv://lucagiovagnoli:t7g%5EFyi7zpN!Liw@ufs13.dsmvdrx.mongodb.net/"
-
-    client = MongoClient(uri, server_api=ServerApi('1'), tls=True, tlsAllowInvalidCertificates=True)
-    return client["concerti_biglietti"]
 
 def get_coordinates(address):
     geolocator = Nominatim(user_agent="find_coordinates")
