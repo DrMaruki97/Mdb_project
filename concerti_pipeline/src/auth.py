@@ -1,12 +1,14 @@
 import bcrypt
 import pymongo
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from rich.console import Console
 
 console = Console()
 
 def get_db():
-    uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
-    client = pymongo.MongoClient(uri)
+    uri = "mongodb+srv://lucagiovagnoli:t7g%5EFyi7zpN!Liw@ufs13.dsmvdrx.mongodb.net/"
+    client = MongoClient(uri, server_api=ServerApi('1'), tls=True, tlsAllowInvalidCertificates=True)
     return client["concerti_biglietti"]
 
 def registra_utente(username, password, conferma_password, tipo):
@@ -23,18 +25,26 @@ def registra_utente(username, password, conferma_password, tipo):
     db.utenti.insert_one({"username": username, "password": hashed, "tipo": tipo, "saldo": 0, "biglietti": []})
     
     if tipo == "artista":
-        artista_doc = db.artisti.find_one({"nome": username})
-        if artista_doc:
+        pipeline = [
+            {"$match": {"nome": username}},
+            {"$lookup": {
+                "from": "concerti",
+                "localField": "_id",
+                "foreignField": "artista_id",
+                "as": "concerti"
+            }}
+        ]
+        artista_docs = list(db.artisti.aggregate(pipeline))
+        
+        if artista_docs:
+            artista_doc = artista_docs[0]
             artista_id = artista_doc["_id"]
-            concerti = list(db.concerti.find({"artista_id": artista_id}))
             db.artisti.update_one({"_id": artista_id}, {"$set": {"utente": username}})
+            for concerto in artista_doc["concerti"]:
+                db.concerti.update_one({"_id": concerto["_id"]}, {"$set": {"artista_id": artista_id}})
         else:
             artista_id = username
             db.artisti.insert_one({"_id": artista_id, "nome": username})
-            concerti = list(db.concerti.find({"artista_id": artista_id}))
-            if concerti:
-                for concerto in concerti:
-                    db.concerti.update_one({"_id": concerto["_id"]}, {"$set": {"artista_id": artista_id}})
     
     console.print("[green]Registrazione avvenuta con successo![/green]")
     return True

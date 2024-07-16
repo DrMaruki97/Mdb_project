@@ -1,14 +1,12 @@
 import pymongo
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import bcrypt
 from rich.console import Console
 from rich.table import Table
+from auth import get_db
 
 console = Console()
-
-def get_db():
-    uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
-    client = pymongo.MongoClient(uri)
-    return client["concerti_biglietti"]
 
 def modifica_nome(username, nuovo_nome):
     db = get_db()
@@ -79,3 +77,18 @@ def visualizza_biglietti(username):
         console.print(table)
     else:
         console.print("[red]Non hai biglietti acquistati.[/red]")
+
+def visualizza_saldo(username):
+    db = get_db()
+    utente = db.utenti.find_one({"username": username})
+    console.print(f"Il tuo saldo attuale è: [green]{utente['saldo']}€[/green]")
+
+def rimuovi_saldo(username, importo):
+    db = get_db()
+    utente = db.utenti.find_one({"username": username})
+    if utente['saldo'] < importo:
+        console.print("[red]Saldo insufficiente per completare l'operazione.[/red]")
+        return False
+    db.utenti.update_one({"username": username}, {"$inc": {"saldo": -importo}})
+    console.print(f"[green]{importo}€ rimossi dal saldo.[/green]")
+    return True

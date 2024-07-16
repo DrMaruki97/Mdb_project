@@ -2,7 +2,8 @@ import pymongo
 from geopy.geocoders import Nominatim
 from rich.console import Console
 from rich.table import Table
-from utils import get_db
+from rich.style import Style
+from auth import get_db
 import uuid
 
 console = Console()
@@ -75,7 +76,16 @@ def visualizza_situazione_biglietti(username):
         return
     
     artista_id = artista_doc["_id"]
-    concerti = list(db.concerti.find({"artista_id": artista_id}))
+    concerti = list(db.concerti.aggregate([
+        {"$match": {"artista_id": artista_id}},
+        {"$unwind": "$settori"},
+        {"$project": {
+            "nome": 1,
+            "data": 1,
+            "settore_nome": "$settori.nome",
+            "posti_rimanenti": "$settori.posti_disponibili"
+        }}
+    ]))
     
     if len(concerti) == 0:
         console.print("[red]Nessun concerto trovato per l'artista.[/red]")
@@ -87,9 +97,14 @@ def visualizza_situazione_biglietti(username):
     table.add_column("Settore", style="green")
     table.add_column("Posti Rimanenti", style="red")
 
+    sold_out_style = Style(color="red", strike=True)
+
     for concerto in concerti:
-        for settore in concerto['settori']:
-            table.add_row(concerto['nome'], concerto['data'], settore['nome'], str(settore['posti_disponibili']))
+        posti_rimanenti = concerto['posti_rimanenti']
+        if posti_rimanenti == 0:
+            table.add_row(concerto['nome'], concerto['data'], concerto['settore_nome'], "Sold Out", style=sold_out_style)
+        else:
+            table.add_row(concerto['nome'], concerto['data'], concerto['settore_nome'], str(posti_rimanenti))
     
     console.print(table)
             
@@ -144,10 +159,27 @@ def visualizza_utenti_biglietti(username):
         return
     
     artista_id = artista_doc["_id"]
-    concerti = list(db.concerti.find({"artista_id": artista_id}))
+    concerti = list(db.concerti.aggregate([
+        {"$match": {"artista_id": artista_id}},
+        {"$lookup": {
+            "from": "utenti",
+            "localField": "nome",
+            "foreignField": "biglietti.concerto",
+            "as": "utenti"
+        }},
+        {"$unwind": "$utenti"},
+        {"$unwind": "$utenti.biglietti"},
+        {"$match": {"utenti.biglietti.concerto": {"$exists": True, "$eq": "$nome"}}},
+        {"$project": {
+            "concerto_nome": "$nome",
+            "concerto_data": "$data",
+            "utente_nome": "$utenti.username",
+            "settore_nome": "$utenti.biglietti.settore"
+        }}
+    ]))
     
     if len(concerti) == 0:
-        console.print("[red]Nessun concerto trovato per l'artista.[/red]")
+        console.print("[red]Nessun utente ha acquistato i biglietti per i concerti dell'artista.[/red]")
         return
     
     table = Table(title="Utenti Biglietti")
@@ -157,13 +189,6 @@ def visualizza_utenti_biglietti(username):
     table.add_column("Settore", style="red")
 
     for concerto in concerti:
-        utenti = list(db.utenti.find({"biglietti.concerto": concerto['nome']}))
-        if len(utenti) == 0:
-            console.print(f"[red]Nessun utente ha acquistato i biglietti per {concerto['nome']}.[/red]")
-            continue
-        for utente in utenti:
-            biglietti_utente = [biglietto for biglietto in utente['biglietti'] if biglietto['concerto'] == concerto['nome']]
-            for biglietto in biglietti_utente:
-                table.add_row(concerto['nome'], concerto['data'], utente['username'], biglietto['settore'])
+        table.add_row(concerto['concerto_nome'], concerto['concerto_data'], concerto['utente_nome'], concerto['settore_nome'])
     
     console.print(table)

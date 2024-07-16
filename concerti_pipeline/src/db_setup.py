@@ -7,7 +7,7 @@ from rich.panel import Panel  # Aggiunta importazione di Panel
 console = Console()
 
 def carica_dati():
-    uri = "mongodb+srv://fumaghe:1909,Andre@databasetox.y1r1afj.mongodb.net/"
+    uri = "mongodb+srv://lucagiovagnoli:t7g%5EFyi7zpN!Liw@ufs13.dsmvdrx.mongodb.net/"
     client = MongoClient(uri)
     db = client["concerti_biglietti"]
 
