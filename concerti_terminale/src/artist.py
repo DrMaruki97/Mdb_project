@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 from rich.console import Console
 from rich.table import Table
 from rich.style import Style
-from utils import get_db
+from auth import get_db
 import uuid
 
 console = Console()
