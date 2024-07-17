@@ -64,11 +64,13 @@ Questo progetto è un sistema di gestione dei concerti che consente agli artisti
 - `purchase.py`: Gestisce l'acquisto dei biglietti.
 - `profile.py`: Gestisce le operazioni del profilo utente.
 
+
+## Autori
+- [DrMaruki97](https://github.com/DrMaruki97)
+- [febrexit](https://github.com/febrexit)
+- [fumaghe](https://github.com/fumaghe)
+- [J0jofra](https://github.com/J0joFra)
+
 ## Licenza
 
 Questo progetto è concesso in licenza sotto la licenza MIT.
-
-## Autori
-
-- [DrMaruki97](https://github.com/DrMaruki97)
-```
