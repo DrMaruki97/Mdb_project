@@ -55,7 +55,7 @@ def cerca_concerto(username):
             return
         
         lat, lon = coordinates
-        distanza = 7  # km
+        distanza = 7  
         while True:
             location_docs = db.location.find({
                 "coordinate": {
